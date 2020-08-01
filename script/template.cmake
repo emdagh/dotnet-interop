@@ -1,0 +1,34 @@
+###
+## ${DISCLAIMER}
+###
+project(${MODULENAME}Adaptor)
+cmake_minimum_required(VERSION 3.8)
+find_package(SWIG REQUIRED)
+find_package(Boost REQUIRED)
+include(${SWIG_USE_FILE})
+
+
+file(GLOB SOURCES *.i)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+set(CMAKE_SWIG_FLAGS "")
+
+message(STATUS "SWIG_LIB_DIR=${SWIG_LIB_DIR}")
+
+set_source_files_properties(${SOURCES} PROPERTIES 
+    CPLUSPLUS ON
+    SWIG_FLAGS "-Wall"
+    INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR};${INCLUDE_DIRECTORIES};${SWIG_LIB_DIR}"
+    GENERATED_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR};${INCLUDE_DIRECTORIES}"
+    SWIG_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR};${SWIG_LIB_DIR}"
+    SWIG_MODULE_NAME ${MODULENAME}
+)
+
+swig_add_library(${PROJECT_NAME} 
+    LANGUAGE csharp
+    SOURCES ${SOURCES}
+    OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/gen/csharp"
+    OUTFILE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/gen/cxx"
+)
+swig_link_libraries(${PROJECT_NAME})
