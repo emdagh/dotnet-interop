@@ -7,6 +7,10 @@
 namespace ns {
     std::vector<unsigned int> vec;
     
+    extern "C" std::wstring return_wstring() {
+        return L"foobar";
+    }
+    
     extern "C" void do_real_wstring(const std::wstring& s) {
         std::wcout << s << std::endl;
     }

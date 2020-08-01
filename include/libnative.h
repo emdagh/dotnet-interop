@@ -13,6 +13,7 @@ namespace ns {
     extern "C" void do_vector(std::vector<int>&);
     extern "C" void do_real_wstring(const std::wstring&);
     extern "C" void do_wstring_vector(std::vector<std::wstring>&);
+    extern "C" std::wstring return_wstring();
 
 }
 
