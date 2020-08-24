@@ -3,11 +3,13 @@
 #include <cstdint>
 #include <iostream>
 #include <cstring>
+#include <algorithm>
 
 namespace ns {
     std::vector<unsigned int> vec;
     
     extern "C" std::wstring return_wstring() {
+        std::wstring* test = new std::wstring(1024, L'a');
         return L"foobar";
     }
     

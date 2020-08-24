@@ -15,12 +15,27 @@ using joaBasics;
 %}
 
 %pragma(csharp) imclasscode=%{
-[StructLayout(LayoutKind.Sequential)]
-public struct datablock
-{
-    public IntPtr _array;
-    public uint _size;
-}
+  protected class SWIGWStringHelper2 {
+
+    [return: global::System.Runtime.InteropServices.MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(WStringMarshaler))]
+    public delegate string SWIGWStringDelegate(global::System.IntPtr message);
+    static SWIGWStringDelegate wstringDelegate = new SWIGWStringDelegate(CreateWString);
+
+    [global::System.Runtime.InteropServices.DllImport("libnative", EntryPoint="SWIGRegisterWStringCallback2")]
+    public static extern void SWIGRegisterWStringCallback2(SWIGWStringDelegate wstringDelegate);
+
+    static string CreateWString(
+        //[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(WStringMarshaler))]
+        IntPtr cString
+    ) {
+      return (string)WStringMarshaler.GetInstance("").MarshalNativeToManaged(cString);
+    }
+
+    static SWIGWStringHelper2() {
+      SWIGRegisterWStringCallback2(wstringDelegate);
+    }
+  }
+  static protected SWIGWStringHelper2 swigWStringHelper2 = new SWIGWStringHelper2();
 %}
 
 %define CSHARP_ARRAY_AND_COUNT(CTYPE, CSTYPE)
@@ -61,5 +76,13 @@ DEBUG_TYPEMAP(wchar_t*, global::System.IntPtr)
 
 %{
 #include "libnative.h"
+
+
+/* Callback for returning strings to C# without leaking memory */
+static SWIG_CSharpWStringHelperCallback SWIG_csharp_wstring_callback2 = NULL;
+
+extern "C" SWIGEXPORT void SWIGSTDCALL SWIGRegisterWStringCallback2(SWIG_CSharpWStringHelperCallback callback) {
+    SWIG_csharp_wstring_callback2 = callback;
+}
 %}
 %include "libnative.h"

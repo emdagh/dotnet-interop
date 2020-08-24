@@ -38,7 +38,7 @@ class wstring;
     return $null;
    }
    $1.assign($input); %}
-%typemap(out) wstring %{ $result = SWIG_csharp_wstring_callback($1.c_str()); %}
+%typemap(out) wstring %{ $result = SWIG_csharp_wstring_callback2($1.c_str()); %}
 
 %typemap(directorout, canthrow=1) wstring 
 %{ if (!$input) {
@@ -47,7 +47,7 @@ class wstring;
    }
    $result.assign($input); %}
 
-%typemap(directorin) wstring %{ $input = SWIG_csharp_wstring_callback($1.c_str()); %}
+%typemap(directorin) wstring %{ $input = SWIG_csharp_wstring_callback2($1.c_str()); %}
 
 %typemap(csin) wstring "$csinput"
 %typemap(csout, excode=SWIGEXCODE) wstring {
@@ -80,7 +80,7 @@ class wstring;
    }
    std::wstring $1_str($input);
    $1 = &$1_str; %}
-%typemap(out) const wstring & %{ $result = SWIG_csharp_wstring_callback($1->c_str()); %}
+%typemap(out) const wstring & %{ $result = SWIG_csharp_wstring_callback2($1->c_str()); %}
 
 %typemap(csin) const wstring & "$csinput"
 %typemap(csout, excode=SWIGEXCODE) const wstring & {
@@ -98,7 +98,7 @@ class wstring;
    $1_str = $input;
    $result = &$1_str; %}
 
-%typemap(directorin) const wstring & %{ $input = SWIG_csharp_wstring_callback($1.c_str()); %}
+%typemap(directorin) const wstring & %{ $input = SWIG_csharp_wstring_callback2($1.c_str()); %}
 
 %typemap(csvarin, excode=SWIGEXCODE2) const wstring & %{
     set {
@@ -113,9 +113,11 @@ class wstring;
 %typemap(typecheck) const wstring & = wchar_t *;
 
 %typemap(throws, canthrow=1) const wstring &
-%{ std::string message($1.begin(), $1.end());
+%{ 
+    std::string message($1.begin(), $1.end());
    SWIG_CSharpSetPendingException(SWIG_CSharpApplicationException, message.c_str());
-   return $null; %}
+   return $null; 
+%}
 
 }
 

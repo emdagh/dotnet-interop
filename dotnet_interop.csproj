@@ -8,6 +8,7 @@
   <ItemGroup>
     <Content Include="gen\libnative.cs" />
     <Content Include="gen\libnativePINVOKE.cs" />
+    <Content Include="WStringMarshaler.cs" />
     <Content Include="Program.cs" />
   </ItemGroup>
 </Project>
