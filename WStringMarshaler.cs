@@ -1,4 +1,4 @@
-namespace joaBasics 
+namespace basics 
 {
     using System;
     using System.Text;
