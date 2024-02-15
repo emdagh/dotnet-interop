@@ -15,7 +15,7 @@ set(SWIG_INCLUDE_DIRS
 set_source_files_properties(${SRC} PROPERTIES
     CPLUSPLUS ON 
     SWIG_FLAGS "-debug-typemap;-Wall"
-    INCLUDE_DIRECTORIES "${SWIG_INCLUDE_DIRS}"
+    #    INCLUDE_DIRECTORIES "${SWIG_INCLUDE_DIRS}"
     GENERATED_INCLUDE_DIRECTORIES "${SWIG_INCLUDE_DIRS}"
 )
 
@@ -26,4 +26,14 @@ swig_add_library(${PROJECT_NAME}
     OUTFILE_DIR ${CMAKE_SOURCE_DIR}/src/gen
     SOURCES ${SRC}
 )
-swig_link_libraries(${PROJECT_NAME})
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY 
+	SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE
+	)
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+	${SWIG_INCLUDE_DIRS}
+	)
+target_link_libraries(${PROJECT_NAME})
+
+#swig_link_libraries(${PROJECT_NAME})
