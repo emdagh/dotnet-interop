@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-namespace joaBasics 
+namespace basics 
 {
         class GCPinnedHandle : IDisposable 
         {
